@@ -20,8 +20,9 @@ function getMaliciousReader(issuedBooks) {
     let maliciousReaders = [];
     issuedBooks.map(issued => {
         if (issued['returndate'] == null) issued['returndate'] = new Date();
-        let diff = new Date(issued['returndate'].getTime() - issued['issuedate'].getTime());
-        if (diff.getUTCMonth() >= 2 & !(maliciousReaders.includes(issued['studentname']))) maliciousReaders.push(issued['studentname']);
+        let timeDiff = Math.abs(issued['returndate'].getTime() - issued['issuedate'].getTime());
+        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        if (diffDays >= 60 & !(maliciousReaders.includes(issued['studentname']))) maliciousReaders.push(issued['studentname']);
     });
     maliciousReaders.map(reader => console.log(reader));
   }
